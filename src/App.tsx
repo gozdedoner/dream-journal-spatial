@@ -49,7 +49,6 @@ export default function App() {
     const m = new Map<string, DreamEntry>();
     [...local, ...server].forEach((x) => m.set(x.id, x));
     return Array.from(m.values());
-    // Eğer yerel öncelik istersen [...server, ...local] yapabilirsin
   }
 
   // İlk yükleme: önce localStorage göster, sonra server ile birleştir
@@ -94,9 +93,7 @@ export default function App() {
         label = r.label;
       } catch {}
       window.dispatchEvent(
-        new CustomEvent("pick-location", {
-          detail: { lat, lng, address: label },
-        })
+        new CustomEvent("pick-location", { detail: { lat, lng, address: label } })
       );
       showToast("Konum alındı");
     } catch {
@@ -111,9 +108,7 @@ export default function App() {
     return entries.filter((d) => {
       if (qMood !== "all" && d.mood !== qMood) return false;
       const ts = qStart ? new Date(qStart).getTime() : -Infinity;
-      const te = qEnd
-        ? new Date(qEnd).getTime() + 24 * 3600 * 1000 - 1
-        : Infinity;
+      const te = qEnd ? new Date(qEnd).getTime() + 24 * 3600 * 1000 - 1 : Infinity;
       const td = new Date(d.date).getTime();
       return td >= ts && td <= te;
     });
@@ -168,10 +163,7 @@ export default function App() {
         <div className="row">
           <div>
             <label>Mood</label>
-            <select
-              value={qMood}
-              onChange={(e) => setQMood(e.target.value as any)}
-            >
+            <select value={qMood} onChange={(e) => setQMood(e.target.value as any)}>
               <option value="all">All</option>
               <option value="happy">happy</option>
               <option value="neutral">neutral</option>
@@ -182,19 +174,11 @@ export default function App() {
           </div>
           <div>
             <label>Start</label>
-            <input
-              type="date"
-              value={qStart}
-              onChange={(e) => setQStart(e.target.value)}
-            />
+            <input type="date" value={qStart} onChange={(e) => setQStart(e.target.value)} />
           </div>
           <div>
             <label>End</label>
-            <input
-              type="date"
-              value={qEnd}
-              onChange={(e) => setQEnd(e.target.value)}
-            />
+            <input type="date" value={qEnd} onChange={(e) => setQEnd(e.target.value)} />
           </div>
         </div>
       </div>
@@ -208,26 +192,20 @@ export default function App() {
                 {new Date(d.date).toLocaleString()} — {d.mood}
               </div>
               <p>{d.text}</p>
-              {d.tags?.length ? (
-                <div className="muted">#{d.tags.join(" #")}</div>
-              ) : null}
+              {d.tags?.length ? <div className="muted">#{d.tags.join(" #")}</div> : null}
               {d.location ? (
                 <div className="muted">
                   📍 {d.location.address ?? ""}{" "}
-                  {`(${d.location.lat.toFixed(3)}, ${d.location.lng.toFixed(
-                    3
-                  )})`}
+                  {`(${d.location.lat.toFixed(3)}, ${d.location.lng.toFixed(3)})`}
                 </div>
               ) : null}
             </div>
           ))}
-          {!filtered.length && (
-            <div className="muted">No entries yet. Add one above.</div>
-          )}
+          {!filtered.length && <div className="muted">No entries yet. Add one above.</div>}
         </div>
       ) : (
         <div style={{ marginTop: 12 }}>
-          {/* Arama kutusu: tıklayınca haritayı uçur + form konumunu doldur */}
+          {/* Arama: tıklayınca haritayı uçur + form konumunu doldur */}
           <GeocoderSearch
             onSelect={(lat, lng, label) => {
               setMapCenter([lat, lng]);
@@ -239,20 +217,11 @@ export default function App() {
           />
 
           {/* Use my location */}
-          <div
-            className="card"
-            style={{ marginTop: 8, display: "flex", gap: 8 }}
-          >
-            <button
-              className="primary"
-              onClick={useMyLocation}
-              disabled={locBusy}
-            >
+          <div className="card" style={{ marginTop: 8, display: "flex", gap: 8 }}>
+            <button className="primary" onClick={useMyLocation} disabled={locBusy}>
               {locBusy ? "Locating..." : "Use my location"}
             </button>
-            {pickMode && (
-              <button onClick={() => setPickMode(false)}>Cancel pick</button>
-            )}
+            {pickMode && <button onClick={() => setPickMode(false)}>Cancel pick</button>}
           </div>
 
           <MapTab

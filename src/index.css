@@ -1,0 +1,295 @@
+@import "leaflet/dist/leaflet.css";
+* {
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell,
+    "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji",
+    "Segoe UI Symbol";
+  background: #050505;
+  color: #e6e6ea;
+}
+a {
+  color: inherit;
+}
+.container {
+  max-width: 1000px;
+  margin: 24px auto;
+  padding: 0 16px;
+}
+.card {
+  background: #1e1e27;
+  border: 1px solid #2a1e35;
+  border-radius: 16px;
+  padding: 16px;
+  box-shadow: 0 6px 20px rgba(150, 7, 245, 0.25);
+}
+.row {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.row > * {
+  flex: 1 1 280px;
+}
+input,
+textarea,
+select,
+button {
+  background: #39373a;
+  color: #eaeaf2;
+  border: 1px solid #30304a;
+  padding: 10px 12px;
+  border-radius: 10px;
+  outline: none;
+  width: 100%;
+}
+button {
+  cursor: pointer;
+}
+button.primary {
+  background: #3b2d42;
+}
+.tabs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 12px;
+  flex-wrap: wrap;
+}
+.tab {
+  padding: 8px 12px;
+  border-radius: 999px;
+  background: #8f38f1;
+  border: 1px solid #2a2a44;
+  cursor: pointer;
+}
+.tab.active {
+  background: #212143;
+  border-color: #44447a;
+}
+.badge {
+  padding: 2px 8px;
+  border-radius: 999px;
+  border: 1px solid #2a2a44;
+  font-size: 12px;
+}
+.list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 12px;
+}
+.muted {
+  color: #9aa0aa;
+}
+.section-title {
+  font-size: 20px;
+  margin: 8px 0 12px;
+}
+.mapwrap {
+  height: 70vh;
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1px solid #2a2a44;
+}
+
+/* Leaflet div icon cleanup */
+.leaflet-div-icon {
+  background: transparent;
+  border: none;
+}
+
+/* Mood-colored dot */
+.dj-marker {
+  width: 14px;
+  height: 14px;
+  border-radius: 9999px;
+  border: 2px solid rgba(255, 255, 255, 0.85);
+}
+.dj-happy {
+  background: #22c55e;
+  box-shadow: 0 0 12px #22c55e;
+}
+.dj-neutral {
+  background: #94a3b8;
+  box-shadow: 0 0 12px #94a3b8;
+}
+.dj-sad {
+  background: #3bf6e6;
+  box-shadow: 0 0 12px #3bd1f6;
+}
+.dj-scary {
+  background: #ef4444;
+  box-shadow: 0 0 12px #ef4444;
+}
+.dj-mystic {
+  background: #f755d4;
+  box-shadow: 0 0 12px #f755ea;
+}
+
+/* Map overlay legend */
+.mapwrap {
+  position: relative;
+}
+.legend {
+  position: absolute;
+  right: 12px;
+  top: 12px;
+  font-size: 12px;
+  background: #121217cc;
+  border: 1px solid #2a2a44;
+  border-radius: 12px;
+  padding: 8px 10px;
+  backdrop-filter: blur(6px);
+}
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 4px;
+}
+.legend-swatch {
+  width: 10px;
+  height: 10px;
+  border-radius: 999px;
+}
+.legend-swatch.happy {
+  background: #22c55e;
+}
+.legend-swatch.neutral {
+  background: #94a3b8;
+}
+.legend-swatch.sad {
+  background: #3bf6e6;
+}
+.legend-swatch.scary {
+  background: #ef4444;
+}
+.legend-swatch.mystic {
+  background: #f755d4;
+}
+
+/* Cluster bubble */
+.dj-cluster {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 9999px;
+  background: radial-gradient(80% 80% at 30% 30%, #6ee7f5, #a855f7);
+  color: #252424;
+  font-weight: 800;
+  border: 2px solid #fff;
+  box-shadow: 0 0 18px #a855f7aa;
+}
+.leaflet-div-icon.dj-cluster {
+  background: transparent;
+  border: none;
+}
+
+/* Toast */
+.toast {
+  position: fixed;
+  left: 50%;
+  bottom: 16px;
+  transform: translateX(-50%);
+  padding: 10px 14px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #ff5bd1, #54ffe0);
+  color: #111;
+  font-weight: 800;
+  border: 1px solid #fff3;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+  z-index: 9999;
+}
+
+/* ——— Responsive tweaks ——— */
+
+/* Tipografi ve başlık boyutu ölçeklensin */
+h1 {
+  font-size: clamp(1.15rem, 2.5vw + 0.6rem, 1.75rem);
+}
+
+/* Kart ızgarası varsayılan */
+.list {
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+}
+
+/* Küçük ekranlar (≤640px) */
+@media (max-width: 640px) {
+  .container {
+    padding: 0 12px;
+  }
+  .row {
+    flex-direction: column;
+    gap: 10px;
+  }
+  .row > * {
+    flex: 1 1 auto;
+  }
+  .list {
+    grid-template-columns: 1fr;
+  }
+
+  /* Harita daha kompakt, köşe yuvarlaklığı azalsın */
+  .mapwrap {
+    height: 60vh;
+    border-radius: 12px;
+  }
+
+  /* Legend sağ üstte yolu kapatmasın; alta sola insin */
+  .legend {
+    right: auto;
+    left: 12px;
+    bottom: 12px;
+    top: auto;
+  }
+
+  /* Sekmeler daralsın */
+  .tabs {
+    gap: 6px;
+  }
+  .tab {
+    padding: 6px 10px;
+  }
+
+  /* iOS klavye zoom’unu engelle (form alanları) */
+  input,
+  textarea,
+  select,
+  button {
+    font-size: 16px;
+    width: 100%;
+  }
+  button {
+    width: 100%;
+  }
+}
+
+/* Orta ekranlar (≥768px) */
+@media (min-width: 768px) {
+  .container {
+    max-width: 1100px;
+  }
+  .list {
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  }
+  .mapwrap {
+    height: 70vh;
+  }
+  /* Butonlar masaüstünde otomatik genişlikte olsun */
+  button {
+    width: auto;
+  }
+}
+
+/* Geniş ekranlar (≥1200px) */
+@media (min-width: 1200px) {
+  .container {
+    max-width: 1200px;
+  }
+  .mapwrap {
+    height: 72vh;
+  }
+}

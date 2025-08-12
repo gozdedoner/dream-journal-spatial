@@ -1,18 +1,17 @@
 import express from "express";
 import cors from "cors";
 import { randomUUID } from "crypto";
-import fetch from "node-fetch";
 
 const app = express();
 
 // --- CORS (preflight dahil) ---
 const corsOptions = {
-  origin: true,                          // gelen Origin'i yansıt
+  origin: true, // gelen Origin'i yansıt (istersen whitelist ile sıkılaştırırız)
   methods: ["GET", "POST", "OPTIONS"],
   allowedHeaders: ["Content-Type"],
 };
 app.use(cors(corsOptions));
-app.options("*", cors(corsOptions));     // <— preflight'ı tüm yollar için ele al
+app.options("*", cors(corsOptions));
 
 app.use(express.json());
 
@@ -20,11 +19,9 @@ app.use(express.json());
 /** @type {Dream[]} */
 const store = [];
 
-// Basit health ve favicon
 app.get("/", (_req, res) => res.send("Dream API is running. Try GET /api/dreams"));
 app.get("/favicon.ico", (_req, res) => res.status(204).end());
 
-// API
 app.get("/api/dreams", (_req,res)=> res.json(store));
 
 app.post("/api/dreams", (req,res)=>{
@@ -34,12 +31,12 @@ app.post("/api/dreams", (req,res)=>{
   res.status(201).json(dream);
 });
 
-// Geocoder proxy (aynı)
 const NOM_HEADERS = {
-  "User-Agent": "DreamJournalSpatial/1.0 (mail@ornek.com)",
-  "Accept-Language": "tr,en;q=0.9"
+  "User-Agent": "DreamJournalSpatial/1.0 (seninmailin@ornek.com)",
+  "Accept-Language": "tr,en;q=0.9",
 };
 
+// /api/geocode/search?q=amsterdam&limit=5
 app.get("/api/geocode/search", async (req, res) => {
   const q = (req.query.q || "").toString();
   const limit = Number(req.query.limit || 5);
@@ -50,6 +47,7 @@ app.get("/api/geocode/search", async (req, res) => {
   res.json(data.map(d => ({ lat: Number(d.lat), lng: Number(d.lon), label: d.display_name })));
 });
 
+// /api/geocode/reverse?lat=41&lng=29
 app.get("/api/geocode/reverse", async (req, res) => {
   const lat = Number(req.query.lat);
   const lng = Number(req.query.lng);
@@ -62,3 +60,4 @@ app.get("/api/geocode/reverse", async (req, res) => {
 
 const PORT = process.env.PORT || 5174;
 app.listen(PORT, () => console.log(`API running on http://localhost:${PORT}`));
+

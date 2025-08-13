@@ -64,14 +64,14 @@ npm run server      # API: http://localhost:5174
 npm run dev         # FE : http://localhost:5173
 Build / Preview
 bash
-Kopyala
-Düzenle
+Copy
+Edit
 npm run build
 npm run preview
 Scripts (from package.json)
 json
-Kopyala
-Düzenle
+Copy
+Edit
 {
   "scripts": {
     "dev": "vite",
@@ -89,8 +89,8 @@ CORS
 Server returns permissive CORS headers for all requests and responds to preflight:
 
 pgsql
-Kopyala
-Düzenle
+Copy
+Edit
 Access-Control-Allow-Origin: *
 Access-Control-Allow-Methods: GET,POST,OPTIONS
 Access-Control-Allow-Headers: <echoed request headers> (or Content-Type)
@@ -102,8 +102,8 @@ GET /api/dreams → Dream[]
 POST /api/dreams → 201 + created Dream
 
 bash
-Kopyala
-Düzenle
+Copy
+Edit
 curl -X POST http://localhost:5174/api/dreams \
   -H "Content-Type: application/json" \
   -d '{"title":"flying","text":"...","date":"2025-08-12","mood":"neutral","tags":["water"],"location":{"lat":41,"lng":29}}'
@@ -113,9 +113,8 @@ GET /api/geocode/reverse?lat=41&lng=29 → { lat, lng, label }
 
 The server proxies Nominatim with polite headers:
 
-http
-Kopyala
-Düzenle
+Copy
+Edit
 User-Agent: DreamJournalSpatial/1.0 (youremail@example.com)
 Accept-Language: tr,en;q=0.9
 Deployment
